@@ -1,0 +1,529 @@
+<?xml version="1.0"?>
+<robot name = "my_snake_robot">
+
+	<gazebo>
+  		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    			<robotNamespace>/my_snake_robot</robotNamespace>
+  		</plugin>
+	</gazebo>
+
+	<material name = "black">
+		<color rgba = "0 0 0 1"/>
+	</material>
+	<material name = "grey">
+		<color rgba = "0.75 0.75 0.75 1"/>
+	</material>
+  
+  	<gazebo reference = "dummy_link">
+  		<kp>1000</kp>
+  		<kd>10</kd>
+  		<mu1>10</mu1>
+  		<mu2>10</mu2>
+  	</gazebo>
+
+    <link name = "dummy_link">
+    </link>
+
+    <joint name = "dummy" type="fixed">
+      <parent link = "dummy_link"/>
+      <child link = "act1"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="act1">
+		<inertial>
+			<origin xyz = "0 0 0" rpy = "0 1.57 0"/>
+			<mass value = "0.00546"/>
+			<inertia ixx ="4.6587e-5" ixy="0" ixz= "0"
+			 iyy= "1.6976e-5" iyz="0" izz="4.1637e-5"/>
+		</inertial>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <geometry>
+        		<mesh filename="package://quadnake_description/meshes/MX-64T.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+        </collision>		
+		<visual>
+			<origin  xyz="0 0 0" rpy="0 1.57 0"/>
+			<geometry>
+        		<mesh filename="package://quadnake_description/meshes/MX-64T.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+			<material name="black"/>
+		</visual>
+    </link>
+  
+  	<gazebo reference = "act1">
+  		<kp>1000</kp>
+  		<kd>10</kd>
+  		<mu1>10</mu1>
+  		<mu2>10</mu2>
+  	</gazebo>
+
+    <link name="link1">
+    	<inertial>
+			<origin xyz = "0 0 0" rpy = "0 0 0"/>
+			<mass value = "0.00546"/>
+			<inertia ixx ="2.042e-06" ixy="0" ixz= "0"
+			 iyy= "1.206e-06" iyz="0" izz="2.817e-06"/>
+		</inertial>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://quadnake_description/meshes/FR07-H101.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+        </collision>		
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://quadnake_description/meshes/FR07-H101.stl" scale="0.01 0.01 0.01"/>
+            </geometry>
+        </visual>
+    </link>
+
+  	<gazebo reference = "link1">
+  		<kp>1000</kp>
+  		<kd>10</kd>
+  		<mu1>10</mu1>
+  		<mu2>10</mu2>
+  	</gazebo>
+
+  	<joint name="joint1" type="revolute">
+    	<axis xyz="1 0 0"/>
+    	<limit effort="1000.0" velocity="1000" lower="-1.57" upper="1.57"/>
+    	<origin rpy="0 0 0" xyz="0 0 0"/>
+    	<parent link="act1"/>
+    	<child link="link1"/>
+  	</joint>
+
+  <transmission name="tran1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint1">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor1">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+    <link name="act2">
+		<inertial>
+			<origin xyz = "0 0 0" rpy = "0 0 0"/>
+			<mass value = "0.00546"/>
+			<inertia ixx ="4.6587e-5" ixy="0" ixz= "0"
+			 iyy= "1.6976e-5" iyz="0" izz="4.1637e-5"/>
+		</inertial>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+        		<mesh filename="package://quadnake_description/meshes/MX-64T.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+        </collision>		
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+        		<mesh filename="package://quadnake_description/meshes/MX-64T.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+			<material name="black"/>
+		</visual>
+    </link>
+  
+  	<gazebo reference = "act2">
+  		<kp>1000</kp>
+  		<kd>10</kd>
+  		<mu1>10</mu1>
+  		<mu2>10</mu2>
+  	</gazebo>
+
+    <joint name = "fixed1" type="fixed">
+      <parent link = "link1"/>
+      <child link = "act2"/>
+      <origin xyz="0 0.08 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="link2">
+    	<inertial>
+			<origin xyz = "0 0 0" rpy = "0 1.57 0"/>
+			<mass value = "0.00546"/>
+			<inertia ixx ="2.042e-06" ixy="0" ixz= "0"
+			 iyy= "1.206e-06" iyz="0" izz="2.817e-06"/>
+		</inertial>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <geometry>
+                <mesh filename="package://quadnake_description/meshes/FR07-H101.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+        </collision>		
+        <visual>
+            <origin xyz="0 0 0" rpy="0 1.57 0" />
+            <geometry>
+                <mesh filename="package://quadnake_description/meshes/FR07-H101.stl" scale="0.01 0.01 0.01"/>
+            </geometry>
+        </visual>
+    </link>
+
+  	<gazebo reference = "link2">
+  		<kp>1000</kp>
+  		<kd>10</kd>
+  		<mu1>10</mu1>
+  		<mu2>10</mu2>
+  	</gazebo>
+
+  	<joint name="joint2" type="revolute">
+    	<axis xyz="0 0 1"/>
+    	<limit effort="1000.0" velocity="1000" lower="-1.57" upper="1.57"/>
+    	<origin rpy="0 0 0" xyz="0 0 0"/>
+    	<parent link="act2"/>
+    	<child link="link2"/>
+
+  	</joint>
+
+  <transmission name="tran2">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint2">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor2">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+    <link name="act3">
+		<inertial>
+			<origin xyz = "0 0 0" rpy = "0 1.57 0"/>
+			<mass value = "0.00546"/>
+			<inertia ixx ="4.6587e-5" ixy="0" ixz= "0"
+			 iyy= "1.6976e-5" iyz="0" izz="4.1637e-5"/>
+		</inertial>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <geometry>
+        		<mesh filename="package://quadnake_description/meshes/MX-64T.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+        </collision>		
+		<visual>
+			<origin  xyz="0 0 0" rpy="0 1.57 0"/>
+			<geometry>
+        		<mesh filename="package://quadnake_description/meshes/MX-64T.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+			<material name="black"/>
+		</visual>
+    </link>
+  
+  	<gazebo reference = "act3">
+  		<kp>1000</kp>
+  		<kd>10</kd>
+  		<mu1>10</mu1>
+  		<mu2>10</mu2>
+  	</gazebo>
+
+    <link name="link3">
+    	<inertial>
+			<origin xyz = "0 0 0" rpy = "0 0 0"/>
+			<mass value = "0.00546"/>
+			<inertia ixx ="2.042e-06" ixy="0" ixz= "0"
+			 iyy= "1.206e-06" iyz="0" izz="2.817e-06"/>
+		</inertial>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://quadnake_description/meshes/FR07-H101.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+        </collision>		
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://quadnake_description/meshes/FR07-H101.stl" scale="0.01 0.01 0.01"/>
+            </geometry>
+        </visual>
+    </link>
+
+  	<gazebo reference = "link3">
+  		<kp>1000</kp>
+  		<kd>10</kd>
+  		<mu1>10</mu1>
+  		<mu2>10</mu2>
+  	</gazebo>
+
+  	<joint name="joint3" type="revolute">
+    	<axis xyz="1 0 0"/>
+    	<limit effort="1000.0" velocity="1000" lower="-1.57" upper="1.57"/>
+    	<origin rpy="0 0 0" xyz="0 0 0"/>
+    	<parent link="act3"/>
+    	<child link="link3"/>
+
+  	</joint>
+
+  <transmission name="tran3">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint3">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor3">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+    <joint name = "fixed2" type="fixed">
+      <parent link = "link2"/>
+      <child link = "act3"/>
+      <origin xyz="0 0.08 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="act4">
+		<inertial>
+			<origin xyz = "0 0 0" rpy = "0 1.57 0"/>
+			<mass value = "0.00546"/>
+			<inertia ixx ="4.6587e-5" ixy="0" ixz= "0"
+			 iyy= "1.6976e-5" iyz="0" izz="4.1637e-5"/>
+		</inertial>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <geometry>
+        		<mesh filename="package://quadnake_description/meshes/MX-64T.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+        </collision>		
+		<visual>
+			<origin  xyz="0 0 0" rpy="0 1.57 0"/>
+			<geometry>
+        		<mesh filename="package://quadnake_description/meshes/MX-64T.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+			<material name="black"/>
+		</visual>
+    </link>
+  
+  	<gazebo reference = "act4">
+  		<kp>1000</kp>
+  		<kd>10</kd>
+  		<mu1>10</mu1>
+  		<mu2>10</mu2>
+  	</gazebo>
+
+    <link name="link4">
+    	<inertial>
+			<origin xyz = "0 0 0" rpy = "0 0 0"/>
+			<mass value = "0.00546"/>
+			<inertia ixx ="2.042e-06" ixy="0" ixz= "0"
+			 iyy= "1.206e-06" iyz="0" izz="2.817e-06"/>
+		</inertial>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://quadnake_description/meshes/FR07-H101.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+        </collision>		
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="package://quadnake_description/meshes/FR07-H101.stl" scale="0.01 0.01 0.01"/>
+            </geometry>
+        </visual>
+    </link>
+
+  	<gazebo reference = "link4">
+  		<kp>1000</kp>
+  		<kd>10</kd>
+  		<mu1>10</mu1>
+  		<mu2>10</mu2>
+  	</gazebo>   
+
+  	<joint name="joint4" type="revolute">
+    	<axis xyz="1 0 0"/>
+    	<limit effort="1000.0" velocity="1000" lower="-1.57" upper="1.57"/>
+    	<origin rpy="0 0 0" xyz="0 0 0"/>
+    	<parent link="act4"/>
+    	<child link="link4"/>
+
+  	</joint>
+
+  <transmission name="tran4">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint4">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor4">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+    <joint name = "fixed3" type="fixed">
+      <parent link = "link3"/>
+      <child link = "act4"/>
+      <origin xyz="0 0.08 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="act5">
+		<inertial>
+			<origin xyz = "0 0 0" rpy = "0 0 0"/>
+			<mass value = "0.00546"/>
+			<inertia ixx ="4.6587e-5" ixy="0" ixz= "0"
+			 iyy= "1.6976e-5" iyz="0" izz="4.1637e-5"/>
+		</inertial>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+        		<mesh filename="package://quadnake_description/meshes/MX-64T.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+        </collision>		
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+        		<mesh filename="package://quadnake_description/meshes/MX-64T.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+			<material name="black"/>
+		</visual>
+    </link>
+  
+  	<gazebo reference = "act5">
+  		<kp>1000</kp>
+  		<kd>10</kd>
+  		<mu1>10</mu1>
+  		<mu2>10</mu2>
+  	</gazebo>
+
+    <joint name = "fixed4" type="fixed">
+      <parent link = "link4"/>
+      <child link = "act5"/>
+      <origin xyz="0 0.08 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="link5">
+    	<inertial>
+			<origin xyz = "0 0 0" rpy = "0 1.57 0"/>
+			<mass value = "0.00546"/>
+			<inertia ixx ="2.042e-06" ixy="0" ixz= "0"
+			 iyy= "1.206e-06" iyz="0" izz="2.817e-06"/>
+		</inertial>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <geometry>
+                <mesh filename="package://quadnake_description/meshes/FR07-H101.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+        </collision>		
+        <visual>
+            <origin xyz="0 0 0" rpy="0 1.57 0" />
+            <geometry>
+                <mesh filename="package://quadnake_description/meshes/FR07-H101.stl" scale="0.01 0.01 0.01"/>
+            </geometry>
+        </visual>
+    </link>
+
+  	<gazebo reference = "act5">
+  		<kp>1000</kp>
+  		<kd>10</kd>
+  		<mu1>10</mu1>
+  		<mu2>10</mu2>
+  	</gazebo>
+
+  	<joint name="joint5" type="revolute">
+    	<axis xyz="0 0 1"/>
+    	<limit effort="1000.0" velocity="1000" lower="-1.57" upper="1.57"/>
+    	<origin rpy="0 0 0" xyz="0 0 0"/>
+    	<parent link="act5"/>
+    	<child link="link5"/>
+  	</joint>
+
+  	<gazebo reference = "joint5">
+  		<kp>1000</kp>
+  		<kd>10</kd>
+  		<mu1>10</mu1>
+  		<mu2>10</mu2>
+  	</gazebo>
+
+  <transmission name="tran5">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint5">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor5">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+    <link name="act6">
+		<inertial>
+			<origin xyz = "0 0 0" rpy = "0 1.57 0"/>
+			<mass value = "0.00546"/>
+			<inertia ixx ="4.6587e-5" ixy="0" ixz= "0"
+			 iyy= "1.6976e-5" iyz="0" izz="4.1637e-5"/>
+		</inertial>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <geometry>
+        		<mesh filename="package://quadnake_description/meshes/MX-64T.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+        </collision>		
+		<visual>
+			<origin  xyz="0 0 0" rpy="0 1.57 0"/>
+			<geometry>
+        		<mesh filename="package://quadnake_description/meshes/MX-64T.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+			<material name="black"/>
+		</visual>
+    </link>
+  
+  	<gazebo reference = "act6">
+  		<kp>1000</kp>
+  		<kd>10</kd>
+  		<mu1>10</mu1>
+  		<mu2>10</mu2>
+  	</gazebo>
+
+    <link name="link6">
+    	<inertial>
+			<origin xyz = "0 0 0" rpy = "0 0 0"/>
+			<mass value = "0.00546"/>
+			<inertia ixx ="2.042e-06" ixy="0" ixz= "0"
+			 iyy= "1.206e-06" iyz="0" izz="2.817e-06"/>
+		</inertial>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://quadnake_description/meshes/FR07-H101.stl" scale="0.01 0.01 0.01"/>
+			</geometry>
+        </collision>		
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://quadnake_description/meshes/FR07-H101.stl" scale="0.01 0.01 0.01"/>
+            </geometry>
+        </visual>
+    </link>
+
+  	<gazebo reference = "link6">
+  		<kp>1000</kp>
+  		<kd>10</kd>
+  		<mu1>10</mu1>
+  		<mu2>10</mu2>
+  	</gazebo>
+
+  	<joint name="joint6" type="revolute">
+    	<axis xyz="1 0 0"/>
+    	<limit effort="1000.0" velocity="1000" lower="-1.57" upper="1.57"/>
+    	<origin rpy="0 0 0" xyz="0 0 0"/>
+    	<parent link="act6"/>
+    	<child link="link6"/>
+
+  	</joint>
+
+  <transmission name="tran6">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="joint6">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor6">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+    <joint name = "fixed5" type="fixed">
+      <parent link = "link5"/>
+      <child link = "act6"/>
+      <origin xyz="0 0.08 0" rpy="0 0 0"/>
+    </joint>
+</robot>
